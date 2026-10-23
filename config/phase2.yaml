@@ -1,0 +1,40 @@
+# 阶段 2：可塑性规则验证
+# 这些参数是 Phase 2 的初始值；验证后会记录到 parameter_policy 的变更日志。
+
+stdp:
+  a_plus: 0.01
+  a_minus: 0.012
+  tau_plus_ms: 20.0
+  tau_minus_ms: 20.0
+  w_min: 0.0
+  w_max: 1.0
+  w_init: 0.5
+
+eligibility:
+  tau_e_ms: 1000.0
+  eta: 1.0          # 仅用于验证；Phase 3 会重新设定
+  delays_s: [0.0, 0.1, 0.2, 0.5, 1.0, 2.0, 5.0]
+
+homeostasis:
+  target_rate_hz: 20.0
+  alpha: 0.1
+  w_min_nS: 2.0
+  w_max_nS: 80.0
+  rate_floor_hz: 1.0
+  duration_s: 120.0
+  measure_window_s: 1.0
+  initial_drive_high_nS: 25.0
+  initial_drive_low_nS: 3.0
+
+cell:
+  C_m_pF: 290.0
+  g_L_nS: 29.0
+  E_L_mV: -70.0
+  g_Na_nS: 14500.0
+  E_Na_mV: 50.0
+  g_K_nS: 1450.0
+  E_K_mV: -100.0
+  g_M_nS: 20.3
+  V_T_mV: -55.0
+  tau_max_ms: 1000.0
+  dt_ms: 0.01

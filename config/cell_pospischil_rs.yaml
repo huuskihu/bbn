@@ -1,0 +1,73 @@
+# Pospischil et al. 2008 — regular-spiking (RS) cortical pyramidal cell
+# 单房室 HH 模型；阶段 0 基线细胞。
+#
+# 来源：
+#   - Pospischil et al. (2008), Biological Cybernetics 99:427–441, Fig. 1 caption
+#   - ModelDB 123623, sPY_template / demo_PY_RS.hoc
+#
+# 关键换算：
+#   论文 Fig.1 caption: L = d = 96 µm, C = 0.29 nF, Rin = 34.5 MΩ,
+#   gleak = 1e-4 S/cm², gNa = 0.05 S/cm², gK = 0.005 S/cm², gM = 7e-5 S/cm².
+#   由此得到有效膜面积 A = 2.9e-4 cm²，绝对电导如下。
+#
+# 注意：
+#   1. ModelDB 的 sPY_template 注释里写 "area ~29000 um2"，但同一份代码的
+#      g_pas/geom 与论文的 0.29 nF / 34.5 MΩ 不一致（差 10 倍）。本配置以
+#      论文 Fig.1 caption 的电容与输入电阻为准。
+#   2. E_K：论文正文写 -90 mV，ModelDB sPY_template 写 -100 mV。
+#      本配置采用 ModelDB 的 -100 mV，以复现已发表代码；若 f-I 偏离，
+#      可在阶段 0 报告里对比 -90 mV 变体。
+#   3. V_T 采用 sPY_template 的 -55 mV；论文拟合表均值约 -61.5 mV。
+#   4. tau_max 采用 sPY_template 的 1000 ms；论文正文一般写 4 s，
+#      拟合表均值约 1123 ms。
+
+model: pospischil2008_RS
+source: "Pospischil et al. 2008, Fig. 1 caption; ModelDB 123623 sPY_template"
+
+temperature_c: 36.0
+
+# 有效膜面积与比电容/比电导（用于审计换算）
+effective_area_cm2: 2.9e-4
+specific:
+  c_m_uF_per_cm2: 1.0
+  g_leak_S_per_cm2: 1.0e-4
+  g_na_S_per_cm2: 0.05
+  g_k_S_per_cm2: 0.005
+  g_m_S_per_cm2: 7.0e-5
+
+# 绝对参数（Brian 2 使用）
+absolute:
+  capacitance_pF: 290.0
+  leak_conductance_nS: 29.0
+  leak_reversal_mV: -70.0
+  na_conductance_nS: 14500.0
+  na_reversal_mV: 50.0
+  k_conductance_nS: 1450.0
+  k_reversal_mV: -100.0
+  m_conductance_nS: 20.3
+  vtraub_mV: -55.0
+  m_tau_max_ms: 1000.0
+
+numerics:
+  dt_ms: 0.025
+  method: exponential_euler
+  codegen_target: numpy
+
+phase0:
+  rest_duration_ms: 500.0
+  rin_duration_ms: 500.0
+  rin_current_nA: -0.05
+  fi_current_min_nA: 0.0
+  fi_current_max_nA: 1.0
+  fi_current_step_nA: 0.05
+  fi_duration_ms: 800.0
+  fi_warmup_ms: 200.0
+  rheobase_scan_step_nA: 0.005
+  spike_current_nA: 1.5
+  spike_pulse_ms: 20.0
+  spike_tail_ms: 60.0
+  adaptation_current_nA: 0.8
+  adaptation_duration_ms: 2000.0
+  benchmark_current_nA: 0.5
+  benchmark_duration_ms: 1000.0
+  seed: 0

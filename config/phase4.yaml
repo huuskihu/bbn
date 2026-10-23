@@ -1,0 +1,112 @@
+# 阶段 4：两池差分读出（push-pull）
+# Tier 0 与 phase1/2/3 对齐；Tier 1 冻结；可塑参数为 Phase 2 验证值 + Phase 3 设置。
+# 与 Phase 3 唯一的机制改动：读出改为 rate_up - rate_down（两池共享输入）。
+
+cell:
+  C_m_pF: 290.0
+  g_L_nS: 29.0
+  E_L_mV: -70.0
+  g_Na_nS: 14500.0
+  E_Na_mV: 50.0
+  g_K_nS: 1450.0
+  E_K_mV: -100.0
+  g_M_nS: 20.3
+  V_T_mV: -55.0
+  tau_max_ms: 1000.0
+  dt_ms: 0.01
+
+phase4:
+  tick_ms: 10.0
+  duration_s: 120.0
+
+  readout_window_ms: 300.0
+  rate_smoothing: 0.2
+  reference_rate_hz: 20.0
+  velocity_gain: 0.15
+  max_velocity: 4.0
+
+  rate_min_hz: 4.0
+  rate_max_hz: 40.0
+  place_sigma_bins: 1.0
+  syn_weight_nS: 40.0
+  syn_tau_ms: 5.0
+  E_syn_mV: 0.0
+
+  predictable_rate_hz: 100.0
+  predictable_duration_ms: 100.0
+  predictable_weight_nS: 5.0
+  unpredictable_rate_hz: 5.0
+  unpredictable_duration_s: 4.0
+  unpredictable_weight_nS: 60.0
+  rest_after_miss_s: 4.0
+
+  # STDP / 三因子（Phase 2 验证值，Phase 3 同）
+  a_plus: 0.01
+  a_minus: 0.012
+  tau_plus_ms: 20.0
+  tau_minus_ms: 20.0
+  w_min: 0.05
+  w_max: 1.5
+  w_init: 1.0
+  w_jitter: 0.2
+  tau_e_ms: 1000.0
+  eta: 1.0
+  reward_plus: 1.0
+  reward_minus: -1.0
+
+  # 稳态
+  homeostasis_enabled: true
+  target_rate_hz: 20.0
+  hs_alpha: 0.05
+  hs_interval_s: 1.0
+  hs_w_min: 0.05
+  hs_w_max: 1.5
+
+  shuffle_rate_hz: 0.5
+
+  # 两池结构
+  pushpull_span: 0.2       # w_up = 1 + span*x, w_down = 1 - span*x, x=(ch-4.5)/3.5
+  random_init_jitter: 0.2
+  snapshot_interval_s: 1.0
+
+  # 抑制性中间神经元（v0.10.0 / v0.11.0 / v0.12.0；默认关闭）
+  inhibitory_enabled: false
+  inh_input_weight: 1.0    # 共享模式：I 细胞感觉权重（相对 syn_weight_nS）
+  inh_weight_nS: 10.0      # 每个 I spike 投递到 motor 池的抑制电导
+  inh_tau_ms: 10.0
+  E_inh_mV: -80.0
+  cross_inhibition_enabled: false
+  cross_rec_weight_nS: 40.0
+  cross_rec_tau_ms: 5.0
+  tuned_inhibition_enabled: false
+  tuned_inh_gain: 1.0
+
+  # 归一化读出（v0.14.0；默认关闭）
+  normalized_readout: false
+  velocity_gain_norm: 5.0   # bins/s
+  norm_eps_hz: 0.001
+
+  # 背景自发活动（v0.15.0；默认关闭）
+  bg_noise_hz: 0.0          # 3.0 = 预注册的 P0 值
+  bg_noise_weight_nS: 40.0  # 校准后冻结
+
+  # 局部信用分配（v0.16.0）由条件名（含 "local"）选择，无独立开关
+
+pong:
+  ball_speed: 0.5
+  paddle_bins: 8.0
+  hit_tolerance: 0.5
+  y_min: 1.0
+  y_max: 8.0
+  initial_paddle_y: 4.5
+
+experiment:
+  conditions:
+    - phase4_pushpull_3b
+    - phase4_pushpull_3b_no_hs
+    - phase4_pushpull_3b_play_hs
+    - phase4_pushpull_static
+    - phase4_random_3b
+    - phase4_symmetric_static
+    - phase4_random_paddle
+  seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]

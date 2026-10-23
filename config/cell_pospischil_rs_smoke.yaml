@@ -1,0 +1,44 @@
+# 快速冒烟配置：只用于验证 phase0_baseline.py 能跑通，不用于正式结果。
+model: pospischil2008_RS
+source: "smoke test only"
+temperature_c: 36.0
+effective_area_cm2: 2.9e-4
+specific:
+  c_m_uF_per_cm2: 1.0
+  g_leak_S_per_cm2: 1.0e-4
+  g_na_S_per_cm2: 0.05
+  g_k_S_per_cm2: 0.005
+  g_m_S_per_cm2: 7.0e-5
+absolute:
+  capacitance_pF: 290.0
+  leak_conductance_nS: 29.0
+  leak_reversal_mV: -70.0
+  na_conductance_nS: 14500.0
+  na_reversal_mV: 50.0
+  k_conductance_nS: 1450.0
+  k_reversal_mV: -100.0
+  m_conductance_nS: 20.3
+  vtraub_mV: -55.0
+  m_tau_max_ms: 1000.0
+numerics:
+  dt_ms: 0.025
+  method: exponential_euler
+  codegen_target: numpy
+phase0:
+  rest_duration_ms: 100.0
+  rin_duration_ms: 100.0
+  rin_current_nA: -0.05
+  fi_current_min_nA: 0.0
+  fi_current_max_nA: 0.8
+  fi_current_step_nA: 0.2
+  fi_duration_ms: 250.0
+  fi_warmup_ms: 50.0
+  rheobase_scan_step_nA: 0.02
+  spike_current_nA: 1.5
+  spike_pulse_ms: 20.0
+  spike_tail_ms: 30.0
+  adaptation_current_nA: 0.8
+  adaptation_duration_ms: 600.0
+  benchmark_current_nA: 0.5
+  benchmark_duration_ms: 200.0
+  seed: 0

@@ -1,0 +1,187 @@
+{
+  "model": "pospischil2008_RS",
+  "config": "config\\cell_pospischil_rs.yaml",
+  "dt_ms": 0.025,
+  "codegen_target": "numpy",
+  "metrics": {
+    "v_rest_mV": {
+      "value": -70.57294424772286,
+      "unit": "mV",
+      "criterion": "-75 to -65",
+      "pass": true
+    },
+    "rin_mohm": {
+      "value": 32.34704730065829,
+      "unit": "MOhm",
+      "criterion": "25 to 45 (paper: 34.5)",
+      "pass": true
+    },
+    "rheobase_nA": {
+      "value": 0.675,
+      "unit": "nA",
+      "criterion": "0.1 to 0.8",
+      "pass": true
+    },
+    "spike_amplitude_mV": {
+      "value": 118.07995418221327,
+      "unit": "mV",
+      "criterion": "> 50",
+      "pass": true
+    },
+    "spike_half_width_ms": {
+      "value": 0.6500000000000021,
+      "unit": "ms",
+      "criterion": "0.3 to 3.0",
+      "pass": true
+    },
+    "isi_ratio": {
+      "value": 4.033578174186781,
+      "unit": "last/first",
+      "criterion": "> 1.0 (adaptation: ISI lengthens)",
+      "pass": true
+    },
+    "rate_at_0p8nA_hz": {
+      "value": 9.999999999999998,
+      "unit": "Hz",
+      "criterion": "1 to 100",
+      "pass": true
+    },
+    "benchmark_wall_s_per_sim_s": {
+      "value": 25.1637955000042,
+      "unit": "s wall / s sim",
+      "criterion": "report only",
+      "pass": true
+    }
+  },
+  "fi_curve": [
+    {
+      "current_nA": 0.0,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.05,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.1,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.15000000000000002,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.2,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.25,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.30000000000000004,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.35000000000000003,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.4,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.45,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.5,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.55,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.6000000000000001,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.65,
+      "spikes": 0,
+      "rate_hz": 0.0
+    },
+    {
+      "current_nA": 0.7000000000000001,
+      "spikes": 2,
+      "rate_hz": 3.333333333333333
+    },
+    {
+      "current_nA": 0.75,
+      "spikes": 4,
+      "rate_hz": 6.666666666666666
+    },
+    {
+      "current_nA": 0.8,
+      "spikes": 6,
+      "rate_hz": 9.999999999999998
+    },
+    {
+      "current_nA": 0.8500000000000001,
+      "spikes": 9,
+      "rate_hz": 14.999999999999998
+    },
+    {
+      "current_nA": 0.9,
+      "spikes": 11,
+      "rate_hz": 18.333333333333332
+    },
+    {
+      "current_nA": 0.9500000000000001,
+      "spikes": 14,
+      "rate_hz": 23.33333333333333
+    },
+    {
+      "current_nA": 1.0,
+      "spikes": 16,
+      "rate_hz": 26.666666666666664
+    }
+  ],
+  "rheobase_nA": 0.675,
+  "adaptation": {
+    "enough_spikes": true,
+    "n_spikes": 24,
+    "first_isi_ms": 23.825000000000006,
+    "last_isi_ms": 96.10000000000008,
+    "isi_ratio": 4.033578174186781,
+    "rate_first_300ms_hz": 20.0,
+    "rate_last_300ms_hz": 10.0
+  },
+  "waveform": {
+    "detected": true,
+    "v_peak_mV": 47.60916351465368,
+    "v_base_mV": -70.4707906675596,
+    "v_threshold_mV": -42.06969340718077,
+    "amplitude_mV": 118.07995418221327,
+    "half_width_ms": 0.6500000000000021,
+    "v_ahp_mV": -69.05489419660968
+  },
+  "benchmark": {
+    "sim_s": 1.0,
+    "wall_s": 25.1637955000042,
+    "ratio": 25.1637955000042
+  }
+}

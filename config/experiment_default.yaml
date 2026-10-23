@@ -1,0 +1,145 @@
+# BBN 实验配置骨架
+# 版本: 0.1.0-scaffold
+# 说明:
+#   - null 表示"待填/待校准"，不是默认值。
+#   - Tier 0 在阶段 0 从 ModelDB 123623 填入并锁定。
+#   - Tier 1 在阶段 0/1 校准后冻结，阶段 3 开始后不再改。
+#   - Tier 2 的边界是初值，阶段 2 可依据文献调整，必须记录变更日志。
+#   - 该文件是唯一参数入口；不要在其他脚本里硬编码。
+
+project: bbn
+version: 0.1.0-scaffold
+status: scaffold
+last_updated: "2026-10-21"
+
+seed: 0
+config_hash: null
+
+simulation:
+  dt_ms: 0.1
+  trial_duration_s: 20
+  session_duration_s: 300
+  checkpoint_every_s: 30
+  max_wall_hours: 24
+  n_parallel_runs: 8
+
+cell:
+  model: pospischil2008_RS
+  source: "ModelDB 123623"
+  tier: 0
+  parameters: null          # {C_m, g_Na, g_K, g_Ca, g_KCa, g_L, E_Na, E_K, E_Ca, E_L, ...}
+  note: "身份参数；禁止为了 Pong 成绩修改。"
+
+sensory:
+  n_channels: 8
+  rate_min_hz: 4
+  rate_max_hz: 40
+  place_sigma_bins: 1.0
+  stim_conductance_ns: null  # Tier 1，阶段 1 校准
+  background_noise_hz: null  # Tier 1，阶段 1 校准
+
+motor:
+  readout_window_ms: 100
+  reference_rate_hz: 20
+  velocity_gain: null        # Tier 1，阶段 1 校准
+  velocity_max_bins_per_s: 2.0
+  paddle_bins: 8
+
+feedback:
+  predictable:
+    rate_hz: 100
+    duration_ms: 100
+    channels: all
+    amplitude_scale: 1.0
+  unpredictable:
+    rate_hz: 5
+    duration_s: 4
+    channels: random
+    amplitude_scale: 2.0
+  rest_after_miss_s: 4
+  silent_duration_s: 4
+
+plasticity:
+  stdp:
+    enabled: true
+    a_plus: null             # Tier 2，阶段 2 依据文献/验证确定
+    a_minus: null
+    tau_plus_ms: 20
+    tau_minus_ms: 20
+    w_min: 0.0
+    w_max: 1.0
+  eligibility:
+    enabled: true
+    tau_e_s: 1.0
+    eta: null                # Tier 2，阶段 3 前确定并冻结
+  homeostatic_scaling:
+    enabled: true
+    target_rate_hz: 20
+    tau_s: 30
+    alpha: 0.1
+  intrinsic:
+    enabled: true
+    rule: oleary2014_simplified
+    s_min: 0.8
+    s_max: 1.2
+    delta_v12_min_mv: -5.0
+    delta_v12_max_mv: 5.0
+    tau_s: 60
+  receptor_pool:
+    enabled: false
+    tau_s: 120
+    total_pool: 1.0
+
+experiment:
+  phases:
+    - phase0_baseline
+    - phase1_static_loop
+    - phase2_plasticity_rules
+    - phase3_single_cell
+    - phase4_network
+    - phase5_optional
+  current_phase: null
+  conditions:
+    - full_feedback
+    - no_feedback
+    - silent
+    - shuffled_feedback
+    - static_cell
+    - random_paddle
+    - always_up
+    - always_down
+  n_seeds: 10
+  t1_min: 5
+  t2_min: 20
+  exclude_first_s: 10
+  metrics:
+    primary:
+      - average_rally_length
+      - aces
+      - long_rallies
+    secondary:
+      - alignment_error
+      - paddle_coverage
+      - action_entropy
+      - weight_monotonicity
+      - gmax_trajectory
+      - v12_trajectory
+      - information_entropy
+
+checkpoint:
+  enabled: true
+  interval_s: 30
+  directory: runs
+  atomic_write: true
+  resume: true
+  save_on_sigint: true
+
+logging:
+  level: INFO
+  directory: runs
+  save_config_copy: true
+
+notes:
+  - "任何 Tier 0 修改必须记录在 docs/parameter_policy.md 的变更日志。"
+  - "任何 Tier 1 修改视为新版本，所有条件重跑。"
+  - "Tier 2 的规则变化必须作为预注册实验变量，不是拟合旋钮。"

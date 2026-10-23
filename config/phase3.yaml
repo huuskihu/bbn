@@ -1,0 +1,87 @@
+# 阶段 3：单细胞闭环学习
+# Tier 0 与 phase1/phase2 对齐；Tier 1 冻结；Tier 2 可塑参数为 Phase 2 验证值。
+
+cell:
+  C_m_pF: 290.0
+  g_L_nS: 29.0
+  E_L_mV: -70.0
+  g_Na_nS: 14500.0
+  E_Na_mV: 50.0
+  g_K_nS: 1450.0
+  E_K_mV: -100.0
+  g_M_nS: 20.3
+  V_T_mV: -55.0
+  tau_max_ms: 1000.0
+  dt_ms: 0.01
+
+phase3:
+  tick_ms: 10.0
+  duration_s: 120.0
+
+  readout_window_ms: 300.0
+  rate_smoothing: 0.2
+  reference_rate_hz: 20.0
+  velocity_gain: 0.15
+  max_velocity: 4.0
+
+  rate_min_hz: 4.0
+  rate_max_hz: 40.0
+  place_sigma_bins: 1.0
+  syn_weight_nS: 40.0
+  syn_tau_ms: 5.0
+  E_syn_mV: 0.0
+
+  predictable_rate_hz: 100.0
+  predictable_duration_ms: 100.0
+  predictable_weight_nS: 5.0
+  unpredictable_rate_hz: 5.0
+  unpredictable_duration_s: 4.0
+  unpredictable_weight_nS: 60.0
+  rest_after_miss_s: 4.0
+
+  # STDP / 三因子（Phase 2 验证值）
+  a_plus: 0.01
+  a_minus: 0.012
+  tau_plus_ms: 20.0
+  tau_minus_ms: 20.0
+  w_min: 0.05
+  w_max: 1.5
+  w_init: 1.0
+  w_jitter: 0.2
+  tau_e_ms: 1000.0
+  eta: 1.0          # 强学习率：给三因子机制一次公平机会；负结果更强
+  reward_plus: 1.0
+  reward_minus: -1.0
+
+  # 稳态
+  homeostasis_enabled: true
+  target_rate_hz: 20.0
+  hs_alpha: 0.05
+  hs_interval_s: 1.0
+  hs_w_min: 0.05
+  hs_w_max: 1.5
+
+  shuffle_rate_hz: 0.5
+
+pong:
+  ball_speed: 0.5
+  paddle_bins: 8.0
+  hit_tolerance: 0.5
+  y_min: 1.0
+  y_max: 8.0
+  initial_paddle_y: 4.5
+
+experiment:
+  conditions:
+    - phase3a_full
+    - phase3a_full_no_hs
+    - phase3b_full
+    - phase3b_full_no_hs
+    - phase3b_no_feedback
+    - phase3b_silent
+    - phase3b_shuffled
+    - static_full
+    - random_paddle
+    - always_up
+    - always_down
+  seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
